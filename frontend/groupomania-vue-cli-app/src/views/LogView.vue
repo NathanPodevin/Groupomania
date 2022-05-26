@@ -42,13 +42,13 @@
             <form method="post" @submit.prevent="signup()">
                 <div class="form">
                     <div>
-                        <label for="nom">Nom</label>
-                        <input id="lastname" class="form-input" type="text" name="nom" placeholder="Nom" v-model="nom" aria-label="nom" required>
+                        <label for="name">Nom</label>
+                        <input id="lastname" class="form-input" type="text" name="name" placeholder="Nom" v-model="name" aria-label="name" required>
                     </div>
 
                     <div>
-                        <label for="prénom">Prénom</label>
-                        <input id="firstname" class="form-input" type="text" name="prénom" placeholder="Prénom" v-model="prénom" aria-label="prénom" required>
+                        <label for="firstname">Prénom</label>
+                        <input id="firstname" class="form-input" type="text" name="firstname" placeholder="Prénom" v-model="firstname" aria-label="firstname" required>
                     </div>
 
                     <div>
@@ -75,6 +75,7 @@
 
 <script>
 
+import axios from "axios"
 
 export default {
     data() {
@@ -82,14 +83,48 @@ export default {
             loginWindow: true,
             signupWindow: false,
             validPassword : false,
-            nom: null,
-            prénom: null,
+            name: null,
+            firstname: null,
             email: null,
-            password: null,
-            passwordConfirm: null
+            password: null
         }
     },
-    methods: {},
+    methods: {
+         login() {
+            axios.post('http://localhost:3000/api/login', {
+                email: this.email,
+                password: this.password
+            })
+            .then((res) => {
+                localStorage.setItem("user", res.data.userId);
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("selectedUser", res.data.userId)
+                this.$store.dispatch("getUserId", res.data.userId);
+                this.$store.state.connectedUser = res.data.userId
+                this.email = this.password = null;
+                this.$router.push("/Home")
+                alert("Bienvenue, vous êtes bien connecté !");
+            })
+            .catch(() => {
+                this.password = null;
+                this.$store.state.errorMsg = "Email ou mot de passe incorrect !"
+            })
+        },
+        signup() {
+            axios.post('http://localhost:3000/api/signup', {
+                name: this.name,
+                firstname: this.firstname,
+                email: this.email,
+                password: this.password
+            })
+            .then(() => {
+                this.login();
+            })
+            .catch(() => {
+                this.$store.state.errorMsg = "Une erreur est survenue !"
+            })
+        },
+    },
 }
 </script>
 

@@ -55,8 +55,17 @@ exports.signup = async (req, res, next) => {
 
 // Fonction pour se connecter
 exports.login = async (req, res, next) => {
+
+      var email    = req.body.email;
+      var password = req.body.password;
+
+      if (req.body.email == null || req.body.password == null) {
+        return res.status(400).json({ 'error': 'Merci de renseigner tous les champs !'});
+      }
 // On cherche l'utilisateur avec son email
-  models.User.findOne({ email: req.body.email })
+      models.User.findOne({
+        where: { email: email }
+      })
       .then(userFound => {
         if (!userFound) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
