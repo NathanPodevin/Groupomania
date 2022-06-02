@@ -1,5 +1,5 @@
 <template>
-<div id="body">
+<body>
     <!-- Header de la page de log in/sign up -->
     <header id="log-header" class="log-header">
         <h1 class="log-header__title"><img src="../assets/icon-left-font-monochrome-white.png" alt="Logo Groupomania Blanc" class="log-header__logo"></h1>
@@ -18,6 +18,7 @@
         <div v-if="loginWindow" class="main__form">
             <form method="post" @submit.prevent="login()">
                 <div class="form">
+                    <h1>Bienvenue !</h1>
                     <div>
                         <label for="email">Identifiant</label>
                         <input id="email" class="form-input" type="email" name="email" placeholder="Email" v-model="email" aria-label="email" required>
@@ -70,12 +71,14 @@
         </div>
     </main>
 
-</div>
+</body>
 </template>
 
 <script>
 
-import axios from "axios"
+import axios from "axios";
+import Swal from 'sweetalert2';
+import 'sweetalert2/src/sweetalert2.scss';
 
 export default {
     data() {
@@ -91,19 +94,21 @@ export default {
     },
     methods: {
          login() {
-            axios.post('http://localhost:3000/api/login', {
+            axios.post('http://localhost:3000/api/auth/login', {
                 email: this.email,
                 password: this.password
             })
             .then((res) => {
-                localStorage.setItem("user", res.data.userId);
+                localStorage.setItem("userId", res.data.userId);
                 localStorage.setItem("token", res.data.token);
-                localStorage.setItem("selectedUser", res.data.userId)
-                this.$store.dispatch("getUserId", res.data.userId);
-                this.$store.state.connectedUser = res.data.userId
+                this.$store.state.connectedUser = res.data.userId;
                 this.email = this.password = null;
                 this.$router.push("/Home")
-                alert("Bienvenue, vous êtes bien connecté !");
+                 Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenue !',
+                    text: 'Vous êtes connectés',
+                })
             })
             .catch(() => {
                 this.password = null;
@@ -111,7 +116,7 @@ export default {
             })
         },
         signup() {
-            axios.post('http://localhost:3000/api/signup', {
+            axios.post('http://localhost:3000/api/auth/signup', {
                 name: this.name,
                 firstname: this.firstname,
                 email: this.email,
@@ -129,8 +134,8 @@ export default {
 </script>
 
 <style lang="scss">
-#body {
-    background: #091F43;
+body {
+    background: #4E5166;
      height: 100%;
 };
 
@@ -156,15 +161,15 @@ export default {
         width: 140px;
         margin: 10px 20px;
         padding: 5px;
-        background: #d4777d;
+        background: #FFD7D7;
         border-radius: 10px;
-        color: #fff;
+        color: #4E5166;
         font-size: 16px;
         border: none;
         &:hover {
             transform: scale(1.1);
             background: #fff;
-            color: #d4777d;
+            color: #FD2D01;
         };        
     }
 }
@@ -176,10 +181,8 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        width: 40%;
         margin: 40px auto 50px auto;
-        padding: 20px 20px;
-        background: #d4777d;
+        padding: 35px 20px;
         border-radius: 10px;
         font-size: 15px;
         & form {
@@ -195,19 +198,24 @@ export default {
 }
 .form {
     margin-bottom: 30px;
+    & h1 {
+        border-bottom: solid 7px #FD2D01;
+        width: 180px;
+        margin: auto;
+    };
     &__btn {
         width: 140px;
         margin: 10px 20px;
         padding: 5px;
-        background: #091F43;
+        background: #4E5166;
         border-radius: 10px;
         border: none;
         font-size: 16px;
         color: #fff;
         &:hover {
             transform: scale(1.11);
-            color: #091F43;
-            background: #B8B8B8;
+            color: #FD2D01;
+            background: #fff;
             
         };
     };   
@@ -231,6 +239,19 @@ export default {
         text-align: center;
     }
 }
+
+.swal2-container {
+    font-family:  Avenir, Helvetica, Arial, sans-serif;
+}
+.swal2-styled.swal2-confirm {
+    background-color: #FFD7D7;
+    color: #4E5166;
+    border: none;
+    &:focus {
+        box-shadow: 0 0 0 3px #FFD7D7;
+    }
+}
+
 // Responsive mobile
 @media screen and (max-width: 768px) {
     a, p, label {

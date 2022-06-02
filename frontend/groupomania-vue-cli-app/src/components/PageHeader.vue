@@ -3,7 +3,7 @@
         <h1 class="log-header__title"><img src="../assets/icon-left-font-monochrome-white.png" alt="Logo Groupomania Blanc" class="log-header__logo"></h1>
         <nav class="log-header__nav">
             <div class="log-header__nav_menu">
-                <router-link to="/Home">Home</router-link> |
+                <router-link to="/Home">Accueil</router-link> |
                 <router-link to="/Post">Publier</router-link> |
                 <router-link to="/Profil">Profil</router-link>
             </div>
@@ -59,15 +59,15 @@ export default {
         width: 140px;
         margin: 10px 20px;
         padding: 5px;
-        background: #d4777d;
+        background: #FFD7D7;
         border-radius: 10px;
-        color: #fff;
+        color: #FD2D01;
         font-size: 16px;
         border: none;
         &:hover {
             transform: scale(1.1);
             background: #fff;
-            color: #d4777d;
+            color: #FFD7D7;
         };        
     }
 }

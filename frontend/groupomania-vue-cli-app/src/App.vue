@@ -20,10 +20,16 @@ nav {
     font-weight: bold;
     color: #fff;
     font-size: 20px;
-    padding: 15px;
+    padding: 15px 15px 5px 15px;
+    text-decoration: none;
 
     &.router-link-exact-active {
-      color: #d4777d;
+      color: #FFD7D7;
+      border-bottom: solid 4px #FD2D01;
+    }
+    &:hover {
+      color: #FFD7D7;
+      border-bottom: solid 4px #FD2D01;
     }
   }
 }

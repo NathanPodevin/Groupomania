@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const models = require("../models");
+require('dotenv').config();
 
 // Regex pour vérifier le format de l'email et du mot de passe
 var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
@@ -21,9 +22,9 @@ exports.signup = async (req, res, next) => {
       attributes: ['email'],
       where: { email: email }
     })
-    .then(function(userFound) {
+    .then(function(user) {
 // Si l'utilisateur n'existe pas déjà on vérifie les infos et on créé son compte      
-      if(!userFound) {
+      if(!user) {
       let testEmail = emailRegex.test(req.body.email);
       let testPassword = passwordRegex.test(req.body.password);
       if(testEmail && testPassword){
@@ -66,22 +67,22 @@ exports.login = async (req, res, next) => {
       models.User.findOne({
         where: { email: email }
       })
-      .then(userFound => {
-        if (!userFound) {
+      .then(user => {
+        if (!user) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
 // On compare les mots de passe
-        bcrypt.compare(req.body.password, userFound.password)
+        bcrypt.compare(req.body.password, user.password)
           .then(valid => {
             if (!valid) {
               return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
 // Utilisateur connecté et on lui assigne un token
             res.status(200).json({
-              userId: userFound.id,
+              userId: user.id,
               token: jwt.sign(
-                { userId: userFound.id },
-                'RANDOM_TOKEN_SECRET',
+                { userId: user.id },
+                process.env.TOKEN_KEY,
                 { expiresIn: '24h' }
               )
             });
@@ -90,3 +91,18 @@ exports.login = async (req, res, next) => {
       })
       .catch(error => res.status(500).json({ error }));
   };
+
+//fonction pour retrouver un utilisateur
+exports.getProfile = async (req, res, next) => {
+  models.User.findByPk(req.params.id)
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(500).json({ error }))
+};
+
+//fonction pour supprimer un utilisateur
+exports.deleteUser = async (req, res, next) => {
+  models.User.destroy({where: {id: req.params.id}})
+        .then(() => res.status(200).json({ message : 'Utilisateur supprimé !'}))
+        .catch(error => res.status(500).json({ error }))
+};
+

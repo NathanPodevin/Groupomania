@@ -1,10 +1,12 @@
 <template>
 <div id="body">
-    <!-- Header de la page d'accueil' -->
+    
     <PageHeader/>
 
     <main id="main" class="main">
-
+        <div class="accueilBloc" >
+        <PostBloc v-for="post in showPosts" :key="post.id" :post="post"/>
+        </div>
     </main>
 
 </div>
@@ -12,19 +14,30 @@
     
 
 <script>
-
-import PageHeader from '../components/PageHeader.vue'
+import PageHeader from '../components/PageHeader.vue';
+import PostBloc from '../components/PostBloc.vue';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   components: {
-  PageHeader
-  }    
+    PageHeader,
+    PostBloc
+    },
+    computed: {
+        ...mapGetters(["showPosts"])
+    },
+    methods: {
+        ...mapActions(["getPosts"]),
+    },
+    mounted() {
+        this.getPosts();
+    }
 }
 </script>
 
 <style lang="scss">
 #body {
-    background: #091F43;
+    background: #4E5166;
      height: 100%;
 };
 
@@ -39,7 +52,7 @@ export default {
         width: 40%;
         margin: 40px auto 50px auto;
         padding: 20px 20px;
-        background: #d4777d;
+        background: #FFD7D7;
         border-radius: 10px;
         font-size: 15px;
    }

@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Post.belongsTo(models.User, {
-        foreignKey: 'idUser'
-      })
+        foreignKey : 'userId',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Post.init({
-    idUser: DataTypes.INTEGER,
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     media: DataTypes.STRING,
