@@ -9,6 +9,7 @@
         </div>
     </main>
 
+    <PageFooter/>
 </div>
 </template>
     
@@ -16,12 +17,14 @@
 <script>
 import PageHeader from '../components/PageHeader.vue';
 import PostBloc from '../components/PostBloc.vue';
+import PageFooter from "../components/PageFooter.vue";
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
   components: {
     PageHeader,
-    PostBloc
+    PostBloc,
+    PageFooter
     },
     computed: {
         ...mapGetters(["showPosts"])
@@ -63,17 +66,8 @@ export default {
     a, p, label {
         font-size: 14px;
     }
-    .main {
-        min-height: 600px;
-        background-size: contain;
-        &__form {
-            width: 60%;
-            & .form-input, .form__btn {
-                font-size: 14px;
-                width: auto;
-            }
-        }
-    }
     
 }
+
+
 </style>

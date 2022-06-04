@@ -27,6 +27,7 @@
                 </div>
         </form>
     </main>
+    <PageFooter/>
 </body>
 </template>
     
@@ -34,12 +35,14 @@
 <script>
 
 import PageHeader from '../components/PageHeader.vue';
+import PageFooter from '@/components/PageFooter.vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default {
   components: {
-  PageHeader
+  PageHeader,
+  PageFooter
   },
 
   data() {
@@ -73,7 +76,6 @@ export default {
                 formData.append("description", this.description);
                 formData.append("image", this.media);
                 console.log(this.media);
-                console.log(formData)
 
       axios.post('http://localhost:3000/api/post', formData, {
                     headers: {"Content-Type": "multipart/form-data",
@@ -186,6 +188,31 @@ form button {
         font-size: 14px;
         width: auto;
     }
+  }
+}
+
+  // Responsive mobile
+@media screen and (max-width: 768px) {
+  body {
+    margin: 0px;
+  }
+  form {
+    width: 100%;
+  }
+  .form__btn {
+    margin-bottom: 20px;
+  }
+  .postForm {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border-radius: 0px;
+    & h1 {
+      margin-top: 20px;
+    }
+  }
+  #previewMedia {
+    width: 80%;
   }
 }
 </style>

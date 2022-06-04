@@ -159,7 +159,7 @@ body {
 .header {
     &__btn {
         width: 140px;
-        margin: 10px 20px;
+        margin: -8px 20px;
         padding: 5px;
         background: #FFD7D7;
         border-radius: 10px;
@@ -262,7 +262,6 @@ body {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        height: 180px;
         padding: 0 0 20px 0;
         &__logo {
             padding: 0;

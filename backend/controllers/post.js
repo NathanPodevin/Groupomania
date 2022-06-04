@@ -2,7 +2,7 @@ const models = require('../models');
 
 exports.createPost = (req, res, next) => {
   models.Post.create({
-      UserId: req.body.userId,
+      userId: req.body.userId,
       title: req.body.title,
       description: req.body.description,
       media: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -18,11 +18,12 @@ exports.getAllPost = (req, res, next) => {
 
     models.Post.findAll({
       limit: (!isNaN(limit)) ? limit : 10,
-      order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
-      include: [{
-        model: models.User,
-        attributes: [ 'firstname', 'name' ]
-      }]
+      order: [(order != null) ? order.split(':') : ['createdAt', 'DESC'],[models.Comment, 'createdAt', 'DESC']],
+      include: [
+        {model: models.User, as: 'User', attributes: [ 'firstname', 'name' ]},
+        {model: models.Comment, attributes: [ 'content','userId'], 
+          include: [{model: models.User, as:'user', attributes: [ 'firstname', 'name' ] }]},
+      ]
     })
       .then(posts => res.status(200).json(posts))
       .catch(error => res.status(400).json({ error }));

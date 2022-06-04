@@ -18,7 +18,7 @@
             </div>
         </section>
     </main>
-
+    <PageFooter/>
 </div>
 </template>
     
@@ -27,6 +27,7 @@
 
 import PageHeader from '../components/PageHeader.vue';
 import PostBloc from '../components/PostBloc.vue';
+import PageFooter from '@/components/PageFooter.vue';
 import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex';
 import Swal from 'sweetalert2';
@@ -35,7 +36,8 @@ export default {
 
   components: {
     PageHeader,
-    PostBloc
+    PostBloc,
+    PageFooter
   },
 
   props: {
@@ -67,6 +69,7 @@ export default {
       .then((res) => {
         this.name = res.data.name,
         this.firstname = res.data.firstname,
+        console.log(this.firstname),
         this.email = res.data.email
       })
       .catch((error) => {
@@ -171,5 +174,21 @@ export default {
         border-radius: 100%;
       }
   }
-  
+
+// Responsive mobile
+@media screen and (max-width: 768px) {
+  .user {
+      & h2 {
+        margin-top: 20px;
+      }
+      &__profile {
+        width: 100%;
+        border: none;
+        border-radius: 0px;
+      }
+      &__posts {
+        margin-top: 40px;
+      }
+  }
+}  
 </style>

@@ -49,7 +49,7 @@ export default {
     &__nav {
         display: flex;
         flex-direction: row;
-        &_menu {
+        &__menu {
             margin: auto;
         }
     };
@@ -89,11 +89,15 @@ export default {
         }
         &__nav {
             padding: 0;
+            flex-direction: column-reverse;
         }
         & button {
-            font-size: 14px;
-            width: 100px;
+            margin: auto;
+            margin-bottom: 30px;
         }
+    }
+    nav a {
+        font-size: 15px;
     }
 }
 

@@ -14,7 +14,7 @@ export default createStore({
 
   getters: {
     showPosts: (state) => state.posts,
-    showUserPosts: (state) => state.userPosts 
+    showUserPosts: (state) => state.userPosts,
   },
   
   mutations: {
@@ -29,8 +29,7 @@ export default createStore({
 
     SET_USER_POSTS(state, userPosts) {
       state.userPosts = userPosts;
-    }
-
+    },
   },
   actions: {
 
@@ -44,6 +43,7 @@ export default createStore({
       axios.get('http://localhost:3000/api/post')
         .then(res => {
           commit("SET_POSTS", res.data);
+          console.log(res.data)
         })
         .catch((error) => {
           console.log(error);
@@ -53,7 +53,7 @@ export default createStore({
     getUserPosts({ commit }) {
       axios.get('http://localhost:3000/api/post')
         .then(res => {
-          commit("SET_USER_POSTS", res.data.filter(post => post.UserId.toString().includes(localStorage.getItem('userId')))
+          commit("SET_USER_POSTS", res.data.filter(post => post.userId.toString().includes(localStorage.getItem('userId'))),
           )
         })
         .catch((error) => {
