@@ -4,9 +4,9 @@ Projet 7 du parcours développeur web d'Openclassrooms, réalisation d'un résea
 
 Technologies utilisées : 
   - Framework frontend : Vue
-  - Express
   - Axios pour les requêtes frontend
   - Backend : Node Js avec nodemon
+  - Framework backend : Express
   - Base de donnée : Mysql avec l'orm Sequelize
 
 Lancer le projet : 
