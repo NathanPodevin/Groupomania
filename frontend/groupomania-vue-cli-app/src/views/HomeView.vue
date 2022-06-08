@@ -4,7 +4,7 @@
     <PageHeader/>
 
     <main id="main" class="main">
-        <div class="accueilBloc" >
+        <div class="accueilBloc">
         <PostBloc v-for="post in showPosts" :key="post.id" :post="post"/>
         </div>
     </main>
@@ -21,10 +21,10 @@ import PageFooter from "../components/PageFooter.vue";
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-  components: {
-    PageHeader,
-    PostBloc,
-    PageFooter
+    components: {
+        PageHeader,
+        PostBloc,
+        PageFooter
     },
     computed: {
         ...mapGetters(["showPosts"])
@@ -32,9 +32,11 @@ export default {
     methods: {
         ...mapActions(["getPosts"]),
     },
+
     mounted() {
         this.getPosts();
-    }
+    },
+    
 }
 </script>
 

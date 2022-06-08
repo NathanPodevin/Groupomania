@@ -69,7 +69,6 @@ export default {
       .then((res) => {
         this.name = res.data.name,
         this.firstname = res.data.firstname,
-        console.log(this.firstname),
         this.email = res.data.email
       })
       .catch((error) => {

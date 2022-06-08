@@ -1,4 +1,5 @@
 const models = require('../models');
+const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
   models.Post.create({
@@ -15,7 +16,6 @@ exports.createPost = (req, res, next) => {
 exports.getAllPost = (req, res, next) => {
     var limit   = parseInt(req.query.limit);
     var order   = req.query.order;
-
     models.Post.findAll({
       limit: (!isNaN(limit)) ? limit : 10,
       order: [(order != null) ? order.split(':') : ['createdAt', 'DESC'],[models.Comment, 'createdAt', 'DESC']],
@@ -30,7 +30,17 @@ exports.getAllPost = (req, res, next) => {
 };
 
 exports.deletePost = async (req, res, next) => {
-  models.Post.destroy({where: {userId: req.params.id}})
-        .then(() => res.status(200).json({ message : 'Post(s) supprimé(s) !'}))
-        .catch(error => res.status(500).json({ error }))
+  models.Post.findByPk(req.params.id)
+  .then(post => {
+      if(post.media != null) {
+          const filename = post.media.split('/images/')[1];
+          fs.unlink(`images/${filename}`, (err) => {
+              if(err) throw err;
+          })
+      };
+      models.Post.destroy({ where: { id: req.params.id } })
+          .then(() => res.status(201).json({ message: "Post supprimée"}))
+          .catch(error => res.status(500).json({ error }));
+  })
+  .catch(error => res.status(500).json({ error }));
 };

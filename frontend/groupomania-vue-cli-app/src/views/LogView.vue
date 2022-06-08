@@ -103,12 +103,12 @@ export default {
                 localStorage.setItem("token", res.data.token);
                 this.$store.state.connectedUser = res.data.userId;
                 this.email = this.password = null;
-                this.$router.push("/Home")
+                this.$router.push("/Home");
                  Swal.fire({
                     icon: 'success',
                     title: 'Bienvenue !',
                     text: 'Vous êtes connectés',
-                })
+                });
             })
             .catch(() => {
                 this.password = null;

@@ -1,6 +1,7 @@
 <template>
 <div id="body">
         <article class="post">
+            <button class="delete-publication" v-if="post.userId == this.$store.state.connectedUser" @click.prevent="deletePost(post.id)" title="Supprimer le post">X</button>
             <p class="post__user">Créé par <span>{{ post.User.firstname }} {{ post.User.name }}</span></p>
             <h3 class="post__title">{{ post.title }}</h3>
             <div class="post__bloc">    
@@ -67,8 +68,23 @@ export default {
                 .then(() => {
                     this.getPosts();
                     console.log(this.comment.User.firstname);
+                    location.reload();
                     this.content = null;
   
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+
+        deletePost(postId) {
+            axios.delete('http://localhost:3000/api/post/' + postId, { 
+                headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': 'Bearer ' + localStorage.getItem('token') },
+            })
+            .then(() => {
+                    this.getPosts();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -176,6 +192,18 @@ export default {
                 text-align: right;
                 margin: 10px 30px 0px 0px;
             }
+        }
+    }
+    .delete-publication {
+        display: flex;
+        border: none;
+        background-color: #FD2D01;
+        color: #fff;
+        border-radius: 3px;
+        font-weight: bold;
+        margin-left: auto;
+        &:hover{
+            background-color: #ca2d0d;
         }
     }
 

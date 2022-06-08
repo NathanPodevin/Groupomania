@@ -21,6 +21,7 @@ export default createStore({
 
     SET_CONNECTED_USER(state, user) {
       state.connectedUser = user;
+      state.userId = user;
     },
 
     SET_POSTS(state, posts) {
@@ -35,15 +36,16 @@ export default createStore({
 
     logout({ commit }) {
       commit('SET_CONNECTED_USER', null);
-      localStorage.clear();      
-      router.push("/")
+      localStorage.clear();  
+      router.push("/");
     },
 
     getPosts({ commit }) {
-      axios.get('http://localhost:3000/api/post')
+      axios.get('http://localhost:3000/api/post', {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
         .then(res => {
           commit("SET_POSTS", res.data);
-          console.log(res.data)
         })
         .catch((error) => {
           console.log(error);
@@ -51,7 +53,9 @@ export default createStore({
     },
 
     getUserPosts({ commit }) {
-      axios.get('http://localhost:3000/api/post')
+      axios.get('http://localhost:3000/api/post', {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
         .then(res => {
           commit("SET_USER_POSTS", res.data.filter(post => post.userId.toString().includes(localStorage.getItem('userId'))),
           )
